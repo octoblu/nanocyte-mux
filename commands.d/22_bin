@@ -1,0 +1,1 @@
+ln -nsf $INSTALL_DIR/bash/bin/* /usr/local/bin/

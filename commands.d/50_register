@@ -1,0 +1,22 @@
+#!/bin/bash
+echo "Setting up credentials for the interval service"
+(
+  PROJECT=nanocyte-interval-redis
+
+  PROJECT_MESHBLU_JSON="$PROJECT_DIR/$PROJECT/meshblu.json"
+  if [ ! -f "$PROJECT_MESHBLU_JSON" ]; then
+
+    cd "$PROJECT_DIR/meshblu"
+    echo "Starting meshblu"
+
+    node server.js --http > /dev/null &
+    meshblu_pid=$!
+    sleep 10
+
+    echo "Registering $PROJECT"
+    meshblu-util register -s localhost:3000 -t interval-service > $PROJECT_DIR/$PROJECT/meshblu.json
+    export NANOCYTE_INTERVAL_UUID=`cat $PROJECT_DIR/$PROJECT/meshblu.json | jq --raw-output '.uuid'`
+  fi
+
+  kill $meshblu_pid
+)

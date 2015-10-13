@@ -1,0 +1,35 @@
+#!/bin/bash
+
+PROJECT_DIR="${HOME}/Projects/Octoblu"
+
+PROJECTS="nanocyte-engine-simple nanocyte-flow-deploy-service nanocyte-interval-service nanocyte-interval-redis"
+
+COMMANDSD="${INSTALL_DIR}/commands.d"
+DEPS_FILE="${INSTALL_DIR}/.deps"
+DEPS_SCRIPT=$(/bin/ls -1 ${COMMANDSD}/*_deps | head -1)
+
+MESHBLU_SERVER=localhost
+MESHBLU_PORT=3000
+
+if [[ -n "$@" ]]; then
+  COMMANDS=$@
+else
+  COMMANDS="-"
+fi
+
+function trap_interrupt {
+  trap "echo $@; exit;" INT
+}
+
+trap_interrupt " ! Caught User Interrupt, Exiting... ! "
+
+function run_sub_command {
+  echo
+  echo " + $1"
+  if [[ -f "$1" ]]; then
+    . $1
+    echo " - $1"
+  else
+    echo " ! command does not exist"
+  fi
+}
