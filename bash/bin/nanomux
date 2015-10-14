@@ -18,10 +18,9 @@ NVM_USE_AND_INSTALL="nvm use 4; npm install"
 
 
 NANOCYTE_INTERVAL_UUID=`cat $BASE/nanocyte-interval-redis/meshblu.json | jq --raw-output '.uuid'`
-
 NANOCYTE_INTERVAL_UUID_ENV="NANOCYTE_INTERVAL_UUID=$NANOCYTE_INTERVAL_UUID"
 
-SESSION='muxnanocyte'
+SESSION='nanomux'
 cd $BASE
 
 tmux start-server
