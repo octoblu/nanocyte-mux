@@ -2,11 +2,12 @@
 
 PROJECT_DIR="${HOME}/Projects/Octoblu"
 
-PROJECTS="nanocyte-engine-simple nanocyte-flow-deploy-service nanocyte-interval-service nanocyte-interval-redis"
+
+PROJECTS="nanocyte-engine-simple nanocyte-flow-deploy-service \
+          nanocyte-interval-service nanocyte-interval-redis \
+          nanocyte-node-registry-local"
 
 COMMANDSD="${INSTALL_DIR}/commands.d"
-DEPS_FILE="${INSTALL_DIR}/.deps"
-DEPS_SCRIPT=$(/bin/ls -1 ${COMMANDSD}/*_deps | head -1)
 
 MESHBLU_SERVER=localhost
 MESHBLU_PORT=3000
