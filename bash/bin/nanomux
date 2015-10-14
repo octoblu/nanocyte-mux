@@ -37,7 +37,7 @@ tmux split-window -t $SESSION:3 -d -p 20
 tmux split-window -t $SESSION:4 -d -p 20
 
 tmux send-keys -t $SESSION:1.0 "cd $NANOCYTE_ENGINE_SIMPLE" C-m
-tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_SIMPLE; npm install; PORT=5050 DEBUG=nanocyte* $MESHBLU_LOCAL_ENV " C-m
+tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_SIMPLE; npm install; PORT=5050 DEBUG=nanocyte* $MESHBLU_LOCAL_ENV $DEBUG_AND_START_ENV" C-m
 
 tmux send-keys -t $SESSION:2.0 "cd $NANOCYTE_INTERVAL_SERVICE" C-m
 tmux send-keys -t $SESSION:2.1 "cd $NANOCYTE_INTERVAL_SERVICE; npm install; PORT=7071 $DEBUG_AND_START_ENV" C-m
