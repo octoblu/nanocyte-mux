@@ -12,7 +12,7 @@ NANOCYTE_ENGINE_ENV="NANOCYTE_ENGINE_URL=http://localhost:5050"
 
 NODE_REGISTRY_URL="http://localhost:9999/registry.json"
 
-DEBUG_AND_START_ENV="DEBUG=nanocyte* nvm use && npm start"
+DEBUG_AND_START_ENV="DEBUG=nanocyte* nvm use 4 && npm start"
 
 
 SESSION='muxnanocyte'
