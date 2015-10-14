@@ -1,0 +1,45 @@
+#!/bin/bash
+
+BASE="$HOME/Projects/Octoblu"
+NANOCYTE_FLOW_DEPLOY="$BASE/nanocyte-flow-deploy-service"
+NANOCYTE_ENGINE_SIMPLE="$BASE/nanocyte-engine-simple"
+NANOCYTE_INTERVAL_SERVICE="$BASE/nanocyte-interval-service"
+NANOCYTE_INTERVAL_REDIS="$BASE/nanocyte-interval-redis"
+NANOCYTE_NODE_REGISTRY="$BASE/nanocyte-node-registry-local"
+
+SESSION='muxnanocyte'
+cd $BASE
+
+tmux start-server
+tmux new-session -d -s $SESSION -n √ø
+tmux send-keys -t $SESSION:0.0 "tmux kill-session -t $SESSION"
+
+tmux new-window -t $SESSION:1 -n engine
+tmux new-window -t $SESSION:2 -n interval
+tmux new-window -t $SESSION:3 -n flow-deploy
+tmux new-window -t $SESSION:4 -n node-registry
+
+tmux split-window -t $SESSION:1 -d -p 20
+
+tmux split-window -t $SESSION:2 -d -p 20
+tmux split-window -t $SESSION:2 -d -p 20
+
+tmux split-window -t $SESSION:3 -d -p 20
+
+tmux split-window -t $SESSION:4 -d -p 20
+
+tmux send-keys -t $SESSION:1.0 "cd $NANOCYTE_ENGINE_SIMPLE" C-m
+tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_SIMPLE; npm install; DEBUG=nanocyte* PORT=5050 npm start" C-m
+
+tmux send-keys -t $SESSION:2.0 "cd $NANOCYTE_INTERVAL_SERVICE" C-m
+tmux send-keys -t $SESSION:2.1 "cd $NANOCYTE_INTERVAL_SERVICE; npm install; DEBUG=nanocyte* PORT=7071 npm start" C-m
+tmux send-keys -t $SESSION:2.2 "cd $NANOCYTE_INTERVAL_REDIS; npm install; DEBUG=nanocyte* PORT=5555 npm start" C-m
+
+tmux send-keys -t $SESSION:3.0 "cd $NANOCYTE_FLOW_DEPLOY" C-m
+tmux send-keys -t $SESSION:3.1 "cd $NANOCYTE_FLOW_DEPLOY; npm install; DEBUG=nanocyte* PORT=5051 NANOCYTE_SERVER=localhost NANOCYTE_PORT=5050 NODE_REGISTRY_URL=localhost:9999/registry.json OCTOBLU_URL=http://localhost:8080 npm start" C-m
+
+tmux send-keys -t $SESSION:4.0 "cd $NANOCYTE_NODE_REGISTRY" C-m
+tmux send-keys -t $SESSION:4.1 "cd $NANOCYTE_NODE_REGISTRY; npm install; PORT=9999 DEBUG=nanocyte* npm start" C-m
+
+tmux select-window -t $SESSION:1
+tmux attach-session -t $SESSION

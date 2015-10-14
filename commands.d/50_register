@@ -16,7 +16,7 @@ echo "Setting up credentials for the interval service"
     echo "Registering $PROJECT"
     meshblu-util register -s localhost:3000 -t interval-service > $PROJECT_DIR/$PROJECT/meshblu.json
     export NANOCYTE_INTERVAL_UUID=`cat $PROJECT_DIR/$PROJECT/meshblu.json | jq --raw-output '.uuid'`
+    
+    kill $meshblu_pid
   fi
-
-  kill $meshblu_pid
 )

@@ -1,7 +1,0 @@
-#!/bin/bash
-(
-  INSTALL_SCRIPT_VER="1.0.0"
-
-  trap_interrupt
-  $SUDO npm install -g http-server
-)
