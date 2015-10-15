@@ -12,6 +12,9 @@ COMMANDSD="${INSTALL_DIR}/commands.d"
 MESHBLU_SERVER=localhost
 MESHBLU_PORT=3000
 
+export NVM_DIR=~/.nvm
+source ${NVM_DIR}/nvm.sh
+
 if [[ -n "$@" ]]; then
   COMMANDS=$@
 else
