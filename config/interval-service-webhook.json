@@ -1,0 +1,19 @@
+{
+  "$set": {
+    "receiveWhitelist": [
+      "*"
+    ],
+    "sendWhitelist": [
+      "*"
+    ],
+    "meshblu": {
+      "messageHooks": [
+        {
+          "url": "http://localhost:5555/message",
+          "method": "POST",
+          "generateAndForwardMeshbluCredentials": true
+        }
+      ]
+    }
+  }
+}
