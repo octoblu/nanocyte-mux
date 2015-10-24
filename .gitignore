@@ -2,3 +2,4 @@ profile-enabled
 .DS_Store
 *.sublime-workspace
 .deps
+npm-debug.log
