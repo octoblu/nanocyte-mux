@@ -2,7 +2,7 @@
 
 BASE="$HOME/Projects/Octoblu"
 NANOCYTE_FLOW_DEPLOY="$BASE/nanocyte-flow-deploy-service"
-NANOCYTE_ENGINE_SIMPLE="$BASE/nanocyte-engine-simple"
+NANOCYTE_ENGINE_SIMPLE="$BASE/nanocyte-engine-http"
 NANOCYTE_INTERVAL_SERVICE="$BASE/nanocyte-interval-service"
 NANOCYTE_INTERVAL_REDIS="$BASE/nanocyte-interval-redis"
 NANOCYTE_NODE_REGISTRY="$BASE/nanocyte-node-registry-local"
