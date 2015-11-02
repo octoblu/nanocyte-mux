@@ -3,6 +3,7 @@
 BASE="$HOME/Projects/Octoblu"
 NANOCYTE_FLOW_DEPLOY="$BASE/nanocyte-flow-deploy-service"
 NANOCYTE_ENGINE_SIMPLE="$BASE/nanocyte-engine-http"
+NANOCYTE_ENGINE_QUEUE="$BASE/nanocyte-engine-queue"
 NANOCYTE_INTERVAL_SERVICE="$BASE/nanocyte-interval-service"
 NANOCYTE_INTERVAL_REDIS="$BASE/nanocyte-interval-redis"
 NANOCYTE_NODE_REGISTRY="$BASE/nanocyte-node-registry-local"
@@ -33,6 +34,7 @@ tmux new-window -t $SESSION:3 -n flow-deploy
 tmux new-window -t $SESSION:4 -n node-registry
 
 tmux split-window -t $SESSION:1 -d -p 20
+tmux split-window -t $SESSION:1 -d -p 20
 
 tmux split-window -t $SESSION:2 -d -p 20
 tmux split-window -t $SESSION:2 -d -p 20
@@ -45,6 +47,8 @@ tmux send-keys -t $SESSION:1.0 "cd $NANOCYTE_ENGINE_SIMPLE" C-m
 tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_SIMPLE; $NVM_USE_AND_INSTALL" C-m
 tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_SIMPLE; curl --silent http://localhost:3000/publickey > public-key.json" C-m
 tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_SIMPLE; PORT=5050 $MESHBLU_LOCAL_ENV $DEBUG_AND_START_ENV" C-m
+tmux send-keys -t $SESSION:1.2 "cd $NANOCYTE_ENGINE_QUEUE; $NVM_USE_AND_INSTALL" C-m
+tmux send-keys -t $SESSION:1.2 "cd $NANOCYTE_ENGINE_QUEUE; $MESHBLU_LOCAL_ENV $DEBUG_AND_START_ENV" C-m
 
 tmux send-keys -t $SESSION:2.0 "cd $NANOCYTE_INTERVAL_SERVICE" C-m
 tmux send-keys -t $SESSION:2.1 "cd $NANOCYTE_INTERVAL_SERVICE; $NVM_USE_AND_INSTALL" C-m
