@@ -18,7 +18,7 @@
     fi
     cd $dir
     if [ -f "package.json" ]; then
-      test_command nvm use 4
+      test_command nvm use --delete-prefix v4.2.2
       test_command npm install
     fi
     if [ -f "bower.json" ]; then

@@ -15,7 +15,7 @@ NODE_REGISTRY_URL_ENV="NODE_REGISTRY_URL=http://localhost:9999/registry.json"
 
 DEBUG_AND_START_ENV="DEBUG=nanocyte* npm start"
 
-NVM_USE_AND_INSTALL="nvm use 4; npm install"
+NVM_USE_AND_INSTALL="nvm use --delete-prefix v4.2.2; npm install"
 
 
 NANOCYTE_INTERVAL_UUID=`cat $BASE/nanocyte-interval-redis/meshblu.json | jq --raw-output '.uuid'`
