@@ -15,7 +15,7 @@ NODE_REGISTRY_URL_ENV="NODE_REGISTRY_URL=http://localhost:9999/registry.json"
 
 DEBUG_AND_START_ENV="DEBUG=nanocyte* npm start"
 
-NVM_USE_AND_INSTALL="nvm use --delete-prefix v4.2.2; npm install"
+NVM_USE_AND_INSTALL="npm install"
 
 
 NANOCYTE_INTERVAL_UUID=`cat $BASE/nanocyte-interval-redis/meshblu.json | jq --raw-output '.uuid'`
@@ -24,9 +24,10 @@ NANOCYTE_INTERVAL_UUID_ENV="NANOCYTE_INTERVAL_UUID=$NANOCYTE_INTERVAL_UUID"
 SESSION='nanomux'
 cd $BASE
 
+nvm use 4
+
 tmux start-server
 tmux new-session -d -s $SESSION -n √ø
-tmux send-keys -t $SESSION:0.0 "tmux kill-session -t $SESSION"
 
 tmux new-window -t $SESSION:1 -n engine
 tmux new-window -t $SESSION:2 -n interval
@@ -42,6 +43,9 @@ tmux split-window -t $SESSION:2 -d -p 20
 tmux split-window -t $SESSION:3 -d -p 20
 
 tmux split-window -t $SESSION:4 -d -p 20
+
+tmux send-keys -t $SESSION:0.0 C-m
+tmux send-keys -t $SESSION:0.0 "tmux kill-session -t $SESSION"
 
 tmux send-keys -t $SESSION:1.0 "cd $NANOCYTE_ENGINE_HTTP" C-m
 tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_HTTP; $NVM_USE_AND_INSTALL" C-m
