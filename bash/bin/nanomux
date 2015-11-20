@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.profile
+
 BASE="$HOME/Projects/Octoblu"
 NANOCYTE_FLOW_DEPLOY="$BASE/nanocyte-flow-deploy-service"
 NANOCYTE_ENGINE_HTTP="$BASE/nanocyte-engine-http"
@@ -24,7 +26,6 @@ NANOCYTE_INTERVAL_UUID_ENV="NANOCYTE_INTERVAL_UUID=$NANOCYTE_INTERVAL_UUID"
 SESSION='nanomux'
 cd $BASE
 
-source ~/.nvm/nvm.sh
 nvm use 4
 
 tmux start-server
