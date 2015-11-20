@@ -24,6 +24,7 @@ NANOCYTE_INTERVAL_UUID_ENV="NANOCYTE_INTERVAL_UUID=$NANOCYTE_INTERVAL_UUID"
 SESSION='nanomux'
 cd $BASE
 
+source ~/.nvm/nvm.sh
 nvm use 4
 
 tmux start-server
