@@ -1,17 +1,19 @@
 #!/bin/bash
-echo "Setting up credentials for the interval service"
+echo "Setting up credentials for nanocyte related services"
 (
+  INTERVAL_SERVICE_MESHBLU_CONFIG="$PROJECT_DIR/nanocyte-interval-redis/meshblu.json"
+  CREDENTIALS_MESHBLU_CONFIG="$PROJECT_DIR/credentials-worker/meshblu.json"
+  CREDENTIALS_PUBLIC_KEY="$PROJECT_DIR/credentials-service/public-key.json"
+  NANOCYTE_PUBLIC_KEY="$PROJECT_DIR/nanocyte-engine-http/public-key.json"
 
-  PROJECT_MESHBLU_JSON="$PROJECT_DIR/nanocyte-interval-redis/meshblu.json"
-  if [ ! -f "$PROJECT_MESHBLU_JSON" ]; then
+  cd "$PROJECT_DIR/meshblu"
+  echo "Starting meshblu"
 
-    cd "$PROJECT_DIR/meshblu"
-    echo "Starting meshblu"
+  node server.js --http > /dev/null &
+  meshblu_pid=$!
+  sleep 10
 
-    node server.js --http > /dev/null &
-    meshblu_pid=$!
-    sleep 10
-
+  if [ ! -f "$INTERVAL_SERVICE_MESHBLU_CONFIG" ]; then
     echo "registering nanocyte-interval-service"
     meshblu-util register -s localhost:3000 -t interval-service > $PROJECT_DIR/nanocyte-interval-redis/meshblu.json
 
@@ -20,7 +22,25 @@ echo "Setting up credentials for the interval service"
 
     meshblu-util update -p -f $INSTALL_DIR/config/interval-service-webhook.json $PROJECT_DIR/nanocyte-interval-redis/meshblu.json
     export NANOCYTE_INTERVAL_UUID=`cat $PROJECT_DIR/nanocyte-interval-redis/meshblu.json | jq --raw-output '.uuid'`
-
-    kill $meshblu_pid
   fi
+
+  if [ ! -f "$CREDENTIALS_MESHBLU_CONFIG" ]; then
+    echo "registering credentials-service"
+    meshblu-util register -s localhost:3000 -t credentials-service > $PROJECT_DIR/credentials-worker/meshblu.json
+    meshblu-util create-hook -t sent -U http://localhost:5454/request $PROJECT_DIR/credentials-worker/meshblu.json
+
+    export CREDENTIALS_SERVICE_UUID=`cat $PROJECT_DIR/credentials-worker/meshblu.json | jq --raw-output '.uuid'`
+  fi
+
+  if [ ! -f "$CREDENTIALS_PUBLIC_KEY" ]; then
+    echo "getting the public key for credentials-service"
+    curl --silent http://localhost:3000/publickey > $PROJECT_DIR/credentials-service/public-key.json
+  fi
+
+  if [ ! -f "$NANOCYTE_PUBLIC_KEY" ]; then
+    echo "getting the public key for nanocyte-engine-http"
+    curl --silent http://localhost:3000/publickey > $PROJECT_DIR/nanocyte-engine-http/public-key.json
+  fi
+
+  kill $meshblu_pid
 )

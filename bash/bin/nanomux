@@ -9,6 +9,8 @@ NANOCYTE_ENGINE_WORKER="$BASE/nanocyte-engine-worker"
 NANOCYTE_INTERVAL_SERVICE="$BASE/nanocyte-interval-service"
 NANOCYTE_INTERVAL_REDIS="$BASE/nanocyte-interval-redis"
 NANOCYTE_NODE_REGISTRY="$BASE/nanocyte-node-registry-local"
+CREDENTIALS_SERVICE="$BASE/credentials-service"
+CREDENTIALS_WORKER="$BASE/credentials-worker"
 
 MESHBLU_LOCAL_ENV="MESHBLU_SERVER=localhost MESHBLU_PORT=3000 MESHBLU_MESSAGES_SERVER=localhost"
 NANOCYTE_ENGINE_ENV="NANOCYTE_ENGINE_URL=http://localhost:5050"
@@ -19,9 +21,11 @@ DEBUG_AND_START_ENV="DEBUG=nanocyte* npm start"
 
 NVM_USE_AND_INSTALL="npm install"
 
-
 NANOCYTE_INTERVAL_UUID=`cat $BASE/nanocyte-interval-redis/meshblu.json | jq --raw-output '.uuid'`
 NANOCYTE_INTERVAL_UUID_ENV="NANOCYTE_INTERVAL_UUID=$NANOCYTE_INTERVAL_UUID"
+
+CREDENTIALS_SERVICE_UUID=`cat $BASE/credentials-worker/meshblu.json | jq --raw-output '.uuid'`
+CREDENTIALS_SERVICE_UUID_ENV="CREDENTIALS_SERVICE_UUID=$CREDENTIALS_SERVICE_UUID"
 
 SESSION='nanomux'
 cd $BASE
@@ -35,6 +39,7 @@ tmux new-window -t $SESSION:1 -n engine
 tmux new-window -t $SESSION:2 -n interval
 tmux new-window -t $SESSION:3 -n flow-deploy
 tmux new-window -t $SESSION:4 -n node-registry
+tmux new-window -t $SESSION:5 -n credentials
 
 tmux split-window -t $SESSION:1 -d -p 20
 tmux split-window -t $SESSION:1 -d -p 20
@@ -46,12 +51,14 @@ tmux split-window -t $SESSION:3 -d -p 20
 
 tmux split-window -t $SESSION:4 -d -p 20
 
+tmux split-window -t $SESSION:5 -d -p 20
+tmux split-window -t $SESSION:5 -d -p 20
+
 tmux send-keys -t $SESSION:0.0 C-m
 tmux send-keys -t $SESSION:0.0 "tmux kill-session -t $SESSION"
 
 tmux send-keys -t $SESSION:1.0 "cd $NANOCYTE_ENGINE_HTTP" C-m
 tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_HTTP; $NVM_USE_AND_INSTALL" C-m
-tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_HTTP; curl --silent http://localhost:3000/publickey > public-key.json" C-m
 tmux send-keys -t $SESSION:1.1 "cd $NANOCYTE_ENGINE_HTTP; PORT=5050 $MESHBLU_LOCAL_ENV $DEBUG_AND_START_ENV" C-m
 tmux send-keys -t $SESSION:1.2 "cd $NANOCYTE_ENGINE_WORKER; $NVM_USE_AND_INSTALL" C-m
 tmux send-keys -t $SESSION:1.2 "cd $NANOCYTE_ENGINE_WORKER; $MESHBLU_LOCAL_ENV $DEBUG_AND_START_ENV" C-m
@@ -68,7 +75,13 @@ tmux send-keys -t $SESSION:3.1 "cd $NANOCYTE_FLOW_DEPLOY; PORT=5051 $MESHBLU_LOC
 
 tmux send-keys -t $SESSION:4.0 "cd $NANOCYTE_NODE_REGISTRY" C-m
 tmux send-keys -t $SESSION:4.1 "cd $NANOCYTE_NODE_REGISTRY; $NVM_USE_AND_INSTALL" C-m
-tmux send-keys -t $SESSION:4.1 "cd $NANOCYTE_NODE_REGISTRY; NODE_DEBUG=request PORT=9999 $NANOCYTE_INTERVAL_UUID_ENV $DEBUG_AND_START_ENV" C-m
+tmux send-keys -t $SESSION:4.1 "cd $NANOCYTE_NODE_REGISTRY; NODE_DEBUG=request PORT=9999 $CREDENTIALS_SERVICE_UUID_ENV $NANOCYTE_INTERVAL_UUID_ENV $DEBUG_AND_START_ENV" C-m
+
+tmux send-keys -t $SESSION:5.0 "cd $CREDENTIALS_SERVICE" C-m
+tmux send-keys -t $SESSION:5.1 "cd $CREDENTIALS_SERVICE; $NVM_USE_AND_INSTALL" C-m
+tmux send-keys -t $SESSION:5.1 "cd $CREDENTIALS_SERVICE; REDIS_URI='redis://127.0.0.1/6379' PORT=5454 $CREDENTIALS_SERVICE_UUID_ENV node command.js" C-m
+tmux send-keys -t $SESSION:5.2 "cd $CREDENTIALS_WORKER; $NVM_USE_AND_INSTALL" C-m
+tmux send-keys -t $SESSION:5.2 "cd $CREDENTIALS_WORKER; REDIS_URI='redis://127.0.0.1/6379' NODE_DEBUG=request $CREDENTIALS_SERVICE_UUID_ENV node command.js " C-m
 
 tmux select-window -t $SESSION:1
 tmux attach-session -t $SESSION

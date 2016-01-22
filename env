@@ -6,7 +6,8 @@ PROJECT_DIR="${HOME}/Projects/Octoblu"
 PROJECTS="nanocyte-engine-simple \
           nanocyte-engine-http nanocyte-engine-worker \
           nanocyte-flow-deploy-service nanocyte-node-registry-local \
-          nanocyte-interval-service nanocyte-interval-redis"
+          nanocyte-interval-service nanocyte-interval-redis \
+          credentials-worker credentials-service"
 
 COMMANDSD="${INSTALL_DIR}/commands.d"
 
