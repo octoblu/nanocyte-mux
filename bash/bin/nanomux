@@ -81,7 +81,7 @@ tmux send-keys -t $SESSION:5.0 "cd $CREDENTIALS_SERVICE" C-m
 tmux send-keys -t $SESSION:5.1 "cd $CREDENTIALS_SERVICE; $NVM_USE_AND_INSTALL" C-m
 tmux send-keys -t $SESSION:5.1 "cd $CREDENTIALS_SERVICE; REDIS_URI='redis://127.0.0.1/6379' PORT=5454 $CREDENTIALS_SERVICE_UUID_ENV node command.js" C-m
 tmux send-keys -t $SESSION:5.2 "cd $CREDENTIALS_WORKER; $NVM_USE_AND_INSTALL" C-m
-tmux send-keys -t $SESSION:5.2 "cd $CREDENTIALS_WORKER; REDIS_URI='redis://127.0.0.1/6379' NODE_DEBUG=request $CREDENTIALS_SERVICE_UUID_ENV node command.js " C-m
+tmux send-keys -t $SESSION:5.2 "cd $CREDENTIALS_WORKER; REDIS_URI='redis://127.0.0.1/6379' NODE_DEBUG=request MONGODB_URI='mongodb://127.0.0.1/meshines' $CREDENTIALS_SERVICE_UUID_ENV node command.js " C-m
 
 tmux select-window -t $SESSION:1
 tmux attach-session -t $SESSION

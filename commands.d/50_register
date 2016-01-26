@@ -27,7 +27,7 @@ echo "Setting up credentials for nanocyte related services"
   if [ ! -f "$CREDENTIALS_MESHBLU_CONFIG" ]; then
     echo "registering credentials-service"
     meshblu-util register -s localhost:3000 -t credentials-service > $PROJECT_DIR/credentials-worker/meshblu.json
-    meshblu-util create-hook -t sent -U http://localhost:5454/request $PROJECT_DIR/credentials-worker/meshblu.json
+    meshblu-util update -p -f $INSTALL_DIR/config/credentials-service-webhook.json $PROJECT_DIR/credentials-worker/meshblu.json
 
     export CREDENTIALS_SERVICE_UUID=`cat $PROJECT_DIR/credentials-worker/meshblu.json | jq --raw-output '.uuid'`
   fi
