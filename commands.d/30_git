@@ -2,7 +2,7 @@
   cd $PROJECT_DIR
   trap_interrupt
 
-  test_command nvm use 4
+  test_command nvm use 5
   for project in $PROJECTS; do (
     git=${project//:[a-zA-Z0-9\-_]*/}
     dir=${project//[a-zA-Z0-9\-_]*:/}
